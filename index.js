@@ -6381,27 +6381,30 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 };
 
 
-function validateParentHasLabel(octokit) {
+function isValidEvent(octokit) {
     return __awaiter(this, void 0, void 0, function* () {
         const parentLabel = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('parent-label', { required: false, trimWhitespace: true });
         if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.action === 'opened') {
-            if (parentLabel) {
-                const events = yield octokit.rest.issues.listEventsForTimeline({
-                    owner: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner,
-                    repo: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo,
-                    issue_number: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.issue.number,
-                });
-                const parentIssues = events.data
-                    .filter((item) => (item.event === 'cross-referenced' && item.source))
-                    .filter((item) => item.source.issue.labels
-                    .filter((label) => label.name.toLowerCase() === parentLabel.toLowerCase()).length > 0);
-                return parentIssues && parentIssues.length > 0;
-            }
-            else {
-                return true;
+            const events = yield octokit.rest.issues.listEventsForTimeline({
+                owner: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner,
+                repo: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo,
+                issue_number: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.issue.number,
+            });
+            const parentIssues = events.data.filter((item) => (item.event === 'cross-referenced' && item.source));
+            if (parentIssues.length > 0) {
+                if (parentLabel) {
+                    const matchedLabels = parentIssues.filter((item) => item.source.issue.labels
+                        .filter((label) => label.name.toLowerCase() === parentLabel.toLowerCase()).length > 0);
+                    return matchedLabels.length > 0;
+                }
+                else {
+                    return true;
+                }
             }
         }
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.warning(`Unexpected action ${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.action}`);
+        else {
+            _actions_core__WEBPACK_IMPORTED_MODULE_0__.warning(`Unexpected action ${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.action}`);
+        }
         return false;
     });
 }
@@ -6424,8 +6427,8 @@ function run() {
         const octokit = _actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit(token, {
             previews: ['mockingbird-preview'],
         });
-        const isValidParent = yield validateParentHasLabel(octokit);
-        if (isValidParent) {
+        const isValid = yield isValidEvent(octokit);
+        if (isValid) {
             yield labelTask(octokit);
         }
     });

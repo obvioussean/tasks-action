@@ -2,29 +2,31 @@ import * as core from '@actions/core';
 import * as github from '@actions/github';
 import { GitHub } from '@actions/github/lib/utils';
 
-async function validateParentHasLabel(octokit: InstanceType<typeof GitHub>) {
+async function isValidEvent(octokit: InstanceType<typeof GitHub>) {
     const parentLabel = core.getInput('parent-label', { required: false, trimWhitespace: true });
 
     if (github.context.payload.action === 'opened') {
-        if (parentLabel) {
-            const events = await octokit.rest.issues.listEventsForTimeline({
-                owner: github.context.repo.owner,
-                repo: github.context.repo.repo,
-                issue_number: github.context.payload.issue!.number,
-            });
+        const events = await octokit.rest.issues.listEventsForTimeline({
+            owner: github.context.repo.owner,
+            repo: github.context.repo.repo,
+            issue_number: github.context.payload.issue!.number,
+        });
 
-            const parentIssues = events.data
-                .filter((item) => (item.event === 'cross-referenced' && item.source))
-                .filter((item) => item.source!.issue!.labels
+        const parentIssues = events.data.filter((item) => (item.event === 'cross-referenced' && item.source));
+
+        if (parentIssues.length > 0) {
+            if (parentLabel) {
+                const matchedLabels = parentIssues.filter((item) => item.source!.issue!.labels
                     .filter((label) => label.name.toLowerCase() === parentLabel.toLowerCase()).length > 0);
 
-            return parentIssues && parentIssues.length > 0;
-        } else {
-            return true;
+                return matchedLabels.length > 0;
+            } else {
+                return true;
+            }
         }
+    } else {
+        core.warning(`Unexpected action ${github.context.payload.action}`);
     }
-
-    core.warning(`Unexpected action ${github.context.payload.action}`);
 
     return false;
 }
@@ -48,9 +50,9 @@ async function run(): Promise<void> {
     const octokit = github.getOctokit(token, {
         previews: ['mockingbird-preview'],
     });
-    const isValidParent = await validateParentHasLabel(octokit);
+    const isValid = await isValidEvent(octokit);
 
-    if (isValidParent) {
+    if (isValid) {
         await labelTask(octokit);
     }
 }

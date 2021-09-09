@@ -2,10 +2,10 @@ name: 'Task Actions'
 description: 'Task creation actions'
 inputs:
   parent-label:
-    description: If specified, will only run for parents with the specified lable
+    description: If specified, will only run for parents with the specified label
     required: false
   task-label:
-    description: The label to apply to the newly created task
+    description: The label to apply to the opened issue
     required: true
     default: 'task'
 runs:
