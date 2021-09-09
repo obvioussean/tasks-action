@@ -30,7 +30,7 @@ async function labelTask(octokit: InstanceType<typeof GitHub>): Promise<void> {
         owner: github.context.repo.owner,
         repo: github.context.repo.repo,
         issue_number: issueNumber,
-        labels: [{ name: label }]
+        labels: [ label ]
     });
 }
 
