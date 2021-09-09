@@ -1,0 +1,20 @@
+name: Tests the label workflow
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  label-task:
+    runs-on: ubuntu-latest
+    name: Labels task for enhancements
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Labels the task
+        id: label_task
+        uses: ./ # Uses an action in the root directory
+        with:
+          parent-label: 'enhancement'
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
