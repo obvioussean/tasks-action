@@ -2,8 +2,9 @@
   "name": "tasks-action",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
+    "build": "ncc build index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,5 +21,10 @@
   "dependencies": {
     "@actions/core": "^1.5.0",
     "@actions/github": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^16.9.0",
+    "@vercel/ncc": "^0.30.0",
+    "typescript": "^4.4.2"
   }
 }
