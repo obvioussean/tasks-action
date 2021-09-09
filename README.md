@@ -6,7 +6,7 @@ This action automatically labels an issue that is opened from the "Convert to is
 
 ## Inputs
 Input Name | Required | Details 
-:-|:-|:-
+:-|:-:|:-
 `parent-label` | | The parent label to match before applying the label to the opened issue, if not provided will apply the label to all converted issues
 `task-label` | :heavy_check_mark: | The label to apply to the opened issue
 
