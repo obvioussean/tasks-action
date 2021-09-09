@@ -16,7 +16,7 @@ jobs:
       - name: Labels the task
         id: label_task
         uses: ./ # Uses an action in the root directory
-        #with:
-          #parent-label: 'enhancement'
+        with:
+          parent-label: 'enhancement'
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
