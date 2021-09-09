@@ -2,7 +2,7 @@ name: 'Task Actions'
 description: 'Task creation actions'
 inputs:
   parent-label:
-    description: Only run for parents with the specified lable
+    description: If specified, will only run for parents with the specified lable
     required: false
   task-label:
     description: The label to apply to the newly created task
