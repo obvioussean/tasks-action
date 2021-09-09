@@ -1,5 +1,5 @@
-name: 'Task Actions'
-description: 'Task creation actions'
+name: 'Task List Actions'
+description: 'Automatically labels an opened issue on a task list'
 inputs:
   parent-label:
     description: If specified, will only run for parents with the specified label
