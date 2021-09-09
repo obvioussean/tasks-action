@@ -1,6 +1,5 @@
 name: 'Task List Actions'
 description: 'Automatically labels an opened issue on a task list'
-icon: alert-circle
 inputs:
   parent-label:
     description: If specified, will only run for parents with the specified label
@@ -12,3 +11,6 @@ inputs:
 runs:
   using: 'node12'
   main: 'index.js'
+branding:
+  icon: alert-circle
+  color: green
