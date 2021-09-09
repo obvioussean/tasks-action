@@ -6407,7 +6407,7 @@ function labelTask(octokit) {
             owner: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner,
             repo: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo,
             issue_number: issueNumber,
-            labels: [{ name: label }]
+            labels: [label]
         });
     });
 }
