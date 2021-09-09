@@ -20,18 +20,23 @@ async function validateParentHasLabel(octokit: InstanceType<typeof GitHub>) {
         return parentIssues && parentIssues.length > 0;
     }
 
+    core.warning(`Unexpected action ${github.context.payload.action}`);
+
     return false;
 }
 
 async function labelTask(octokit: InstanceType<typeof GitHub>): Promise<void> {
     const issueNumber = github.context.payload.issue!.number;
     const label = core.getInput('task-label', { required: true, trimWhitespace: true });
-    const result = await octokit.rest.issues.addLabels({
+    
+    await octokit.rest.issues.addLabels({
         owner: github.context.repo.owner,
         repo: github.context.repo.repo,
         issue_number: issueNumber,
         labels: [ label ]
     });
+
+    core.info(`Added label ${label} to ${issueNumber}`);
 }
 
 async function run(): Promise<void> {

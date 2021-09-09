@@ -6396,6 +6396,7 @@ function validateParentHasLabel(octokit) {
                 .filter((label) => label.name.toLowerCase() === parentLabel.toLowerCase()).length > 0);
             return parentIssues && parentIssues.length > 0;
         }
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.warning(`Unexpected action ${_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.action}`);
         return false;
     });
 }
@@ -6403,12 +6404,13 @@ function labelTask(octokit) {
     return __awaiter(this, void 0, void 0, function* () {
         const issueNumber = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.issue.number;
         const label = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('task-label', { required: true, trimWhitespace: true });
-        const result = yield octokit.rest.issues.addLabels({
+        yield octokit.rest.issues.addLabels({
             owner: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner,
             repo: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo,
             issue_number: issueNumber,
             labels: [label]
         });
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Added label ${label} to ${issueNumber}`);
     });
 }
 function run() {
