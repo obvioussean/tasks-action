@@ -6411,14 +6411,14 @@ function isValidEvent(octokit) {
 function labelTask(octokit) {
     return __awaiter(this, void 0, void 0, function* () {
         const issueNumber = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.issue.number;
-        const label = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('task-label', { required: true, trimWhitespace: true });
+        const labels = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput('task-label', { required: true, trimWhitespace: true }).split(",");
         yield octokit.rest.issues.addLabels({
             owner: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner,
             repo: _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.repo,
             issue_number: issueNumber,
-            labels: [label]
+            labels: labels
         });
-        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Added label ${label} to ${issueNumber}`);
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info(`Added labels ${labels.join(",")} to ${issueNumber}`);
     });
 }
 function run() {

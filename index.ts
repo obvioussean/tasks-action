@@ -33,16 +33,16 @@ async function isValidEvent(octokit: InstanceType<typeof GitHub>) {
 
 async function labelTask(octokit: InstanceType<typeof GitHub>): Promise<void> {
     const issueNumber = github.context.payload.issue!.number;
-    const label = core.getInput('task-label', { required: true, trimWhitespace: true });
+    const labels = core.getInput('task-label', { required: true, trimWhitespace: true }).split(",");
 
     await octokit.rest.issues.addLabels({
         owner: github.context.repo.owner,
         repo: github.context.repo.repo,
         issue_number: issueNumber,
-        labels: [label]
+        labels: labels
     });
 
-    core.info(`Added label ${label} to ${issueNumber}`);
+    core.info(`Added labels ${labels.join(",")} to ${issueNumber}`);
 }
 
 async function run(): Promise<void> {

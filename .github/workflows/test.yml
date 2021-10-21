@@ -18,5 +18,6 @@ jobs:
         uses: ./ # Uses an action in the root directory
         with:
           parent-label: 'enhancement'
+          task-label: 'task,issue'
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
