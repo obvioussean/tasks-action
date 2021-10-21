@@ -8,7 +8,7 @@ This action automatically labels an issue that is opened from the "Convert to is
 Input Name | Required | Details 
 :-|:-:|:-
 `parent-label` | | The parent label to match before applying the label to the opened issue, if not provided will apply the label to all converted issues
-`task-label` | :heavy_check_mark: | The label to apply to the opened issue
+`task-label` | :heavy_check_mark: | The comma separated list of labels to apply to the opened issue
 
 ## Environment Variables
 
